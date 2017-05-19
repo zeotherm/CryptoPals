@@ -87,5 +87,25 @@ namespace CryptoPals.Properties {
                 return ResourceManager.GetString("en_corpus", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Project Gutenberg EBook of The Bab Ballads, by W. S. Gilbert
+        ///(#3 in our series by W. S. Gilbert)
+        ///
+        ///Copyright laws are changing all over the world. Be sure to check the
+        ///copyright laws for your country before downloading or redistributing
+        ///this or any other Project Gutenberg eBook.
+        ///
+        ///This header should be the first thing seen when viewing this Project
+        ///Gutenberg file.  Please do not remove it.  Do not change or edit the
+        ///header without written permission.
+        ///
+        ///Please read the &quot;legal small print,&quot; and ot [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string en_corpus2 {
+            get {
+                return ResourceManager.GetString("en_corpus2", resourceCulture);
+            }
+        }
     }
 }
