@@ -64,8 +64,20 @@ namespace CryptoPals
 			return new EnhancedByte(ret);
 		}
 
+		private EnhancedByte XOR( byte b) {
+			var ret = new byte[_data.Length];
+			for( int i = 0; i < _data.Length; i++) {
+				ret[i] = (byte)(_data[i] ^ b);
+			}
+			return new EnhancedByte(ret);
+		}
+
 		public static EnhancedByte operator ^(EnhancedByte e1, EnhancedByte e2) {
 			return e1.XOR(e2);
+		}
+
+		public static EnhancedByte operator ^(EnhancedByte e, byte b) {
+			return e.XOR(b);
 		}
 	}
 }

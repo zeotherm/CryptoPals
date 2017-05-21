@@ -61,10 +61,12 @@ namespace CryptoPals {
 			_triad = "   ";
 		}
 
+		public LanguageSample(Uri loc) {
+			// Make a constructor that will read a URL to generate a corpus
+			throw new NotImplementedException();
+		}
+
 		public LanguageSample(Assembly a, string resource_file) : this(){
-			//var assembly = Assembly.GetExecutingAssembly();
-			//var resourceName = "en-corpus.txt";
-			
 			// default to using english language for now
 			var l = a.GetManifestResourceNames();
 
@@ -94,7 +96,7 @@ namespace CryptoPals {
 		}
 
 		private void ProcessStringIntoRefDictionary( string s) {
-			foreach (char c in s.Where(l => l != '\n')) {
+			foreach (char c in s.ToUpper().Where(l => l != '\n')) {
 				AlphabetCounter val;
 				if (_n_gram.ContainsKey(_triad)) {
 					val = _n_gram[_triad];
