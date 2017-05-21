@@ -6,15 +6,20 @@ using System.Threading.Tasks;
 
 namespace CryptoPals
 {
+	public enum bytemode { HEX, ASCII };
 	public class EnhancedByte
 	{
 		private byte[] _data;
 
-		public EnhancedByte(string val) {
-			System.Diagnostics.Debug.Assert(val.Length % 2 == 0);
-			_data = new byte[val.Length / 2];
-			for (int i = 0; i < val.Length / 2; i++) {
-				_data[i] = byte.Parse(val.Substring(i * 2, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
+		public EnhancedByte(string val, bytemode bm = bytemode.HEX) {
+			if (bm == bytemode.HEX) {
+				System.Diagnostics.Debug.Assert(val.Length % 2 == 0);
+				_data = new byte[val.Length / 2];
+				for (int i = 0; i < val.Length / 2; i++) {
+					_data[i] = byte.Parse(val.Substring(i * 2, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
+				}
+			} else {
+				_data = Encoding.ASCII.GetBytes(val);
 			}
 		}
 
