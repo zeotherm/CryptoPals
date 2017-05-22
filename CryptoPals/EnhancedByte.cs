@@ -84,5 +84,26 @@ namespace CryptoPals
 		public static EnhancedByte operator ^(EnhancedByte e, byte b) {
 			return e.XOR(b);
 		}
+
+		private int DifferingBits( byte l, byte r) {
+			int count = 0;
+			for( int i = 0; i < 8; i++) {
+				if ((l & (1 << i)) != (r & (1 << i))) count++;
+			}
+			return count;
+		}
+
+		public int HammingDistance( EnhancedByte r) {
+			if (this.Length != r.Length) throw new InvalidOperationException("cannot compute Hamming distance between unequal length EnhancedBytes");
+			int count = 0;
+			for (int i = 0; i < this.Length; i++) {
+				count += DifferingBits(_data[i], r[i]);
+			}
+			return count;
+		}
+
+		public static int EditDistance( EnhancedByte l, EnhancedByte r) {
+			return l.HammingDistance(r);
+		}
 	}
 }

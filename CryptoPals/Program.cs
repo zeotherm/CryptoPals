@@ -27,6 +27,11 @@ namespace CryptoPals
 
 			var best_byte = scores.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
 			Console.WriteLine("Decoding with {0:X2} ({1}) gives \"{2}\"", best_byte, Encoding.ASCII.GetString(new[] { best_byte }), (e ^ best_byte).ToASCII());
+
+			var eb1 = new EnhancedByte("this is a test", bytemode.ASCII);
+			var eb2 = new EnhancedByte("wokka wokka!!!", bytemode.ASCII);
+
+			Console.WriteLine("Weird Hamming Distance is {0}", eb1.HammingDistance(eb2));
 		}
 	}
 }

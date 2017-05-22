@@ -18,10 +18,6 @@ namespace CryptoPals {
 			if( _s1.Length != _s2.Length) {
 				throw new InvalidOperationException("Hamming distance can only be computed for equal length strings");
 			}
-			//var t = _s1.Zip(_s2, (s1, s2) => new Tuple<char, char>(s1, s2));
-			//var u = t.Select(tu => tu.Item1 - tu.Item2 == 0 ? 0 : 1);
-			//var v = u.Sum();
-			//return v;
 			return _s1.Zip(_s2, (l, r) => l - r == 0 ? 0 : 1).Sum();
 		}
 
