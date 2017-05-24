@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BestByteScore.cs" />
     <Compile Include="EnhancedByte.cs" />
     <Compile Include="LanguageSample.cs" />
     <Compile Include="Program.cs" />
