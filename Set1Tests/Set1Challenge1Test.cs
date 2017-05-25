@@ -23,7 +23,7 @@ namespace Set1Tests {
 			var b2 = new EnhancedByte("686974207468652062756c6c277320657965");
 			var correct = "746865206b696420646f6e277420706c6179";
 			
-			Assert.AreEqual(correct.ToUpper(), (b1^b2).ToString());
+			Assert.AreEqual(correct, (b1^b2).ToString());
 		}
 	}
 }
