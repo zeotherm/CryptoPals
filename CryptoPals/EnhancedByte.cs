@@ -50,7 +50,7 @@ namespace CryptoPals
 
 		public override string ToString() {
 			string hex = BitConverter.ToString(_data);
-			return hex.Replace("-", "");
+			return hex.ToLower().Replace("-", "");
 		}
 
 		public string ToASCII() {
@@ -104,6 +104,28 @@ namespace CryptoPals
 
 		public static int EditDistance( EnhancedByte l, EnhancedByte r) {
 			return l.HammingDistance(r);
+		}
+
+		private EnhancedByte RepeatingKeyXORHelper( string key)
+		{
+			var key_bytes = Encoding.ASCII.GetBytes(key);
+			var len = key_bytes.Length;
+			var ret = new byte[_data.Length];
+			for( int i = 0; i < _data.Length; i++)
+			{
+				ret[i] = (byte)(_data[i] ^ key_bytes[i % len]);
+			}
+			return new EnhancedByte(ret);
+		}
+
+		public EnhancedByte DecryptRepeatingKeyXOR( string key)
+		{
+			return RepeatingKeyXORHelper(key);
+		}
+
+		public EnhancedByte EncryptRepeatingKeyXOR( string key)
+		{
+			return RepeatingKeyXORHelper(key);
 		}
 	}
 }
