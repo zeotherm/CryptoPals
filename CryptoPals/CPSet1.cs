@@ -54,5 +54,25 @@ namespace CryptoPals
 			Console.WriteLine("Encrypted: {0}", encrypted);
 			Console.WriteLine("Decrypted: {0}", encrypted.DecryptRepeatingKeyXOR(key).ToASCII());
 		}
+
+		public static void Challenge6()
+		{
+			var lines = File.ReadAllLines(@"C:\Users\Matt\Documents\Visual Studio 2015\Projects\CryptoPals\CryptoPals\S1C6.txt");
+			var EncryptedData = new EnhancedByte(Convert.FromBase64String(String.Join("", lines)));
+			var optKeysize = -1;
+			var bestDist = Double.MaxValue;
+			for (int keysize = 2; keysize < 41; keysize++)
+			{
+				var chunk1 = EncryptedData.Take(keysize);
+				var chunk2 = EncryptedData.Skip(keysize).Take(keysize);
+				var distance = (double)chunk1.HammingDistance(chunk2) / ((double)keysize);
+				if( distance < bestDist)
+				{
+					optKeysize = keysize;
+					bestDist = distance;
+				}
+			}
+			Console.WriteLine("Optimal keysize = {0}, distance = {1}", optKeysize, bestDist);
+		}
 	}
 }

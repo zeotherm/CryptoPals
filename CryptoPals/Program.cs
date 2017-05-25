@@ -16,6 +16,8 @@ namespace CryptoPals
 			CPSet1.Challenge4();
 
 			CPSet1.Challenge5();
+
+			CPSet1.Challenge6();
 			//var eb1 = new EnhancedByte("this is a test", bytemode.ASCII);
 			//var eb2 = new EnhancedByte("wokka wokka!!!", bytemode.ASCII);
 

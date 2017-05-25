@@ -127,5 +127,17 @@ namespace CryptoPals
 		{
 			return RepeatingKeyXORHelper(key);
 		}
+
+		public EnhancedByte Skip( int n)
+		{
+			// return a new EnhancedByte that excludes the first n bytes
+			return new EnhancedByte(_data.Skip(n).ToArray());
+		}
+
+		public EnhancedByte Take( int n)
+		{
+			// returns a new EnhancedByte that contains only the first n bytes
+			return new EnhancedByte(_data.Take(n).ToArray());
+		}
 	}
 }

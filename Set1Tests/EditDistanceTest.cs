@@ -66,5 +66,13 @@ namespace Set1Tests {
 			var tc = new TextComparer(s1, s2);
 			Assert.AreEqual(14, tc.LevenshteinDistance());
 		}
+
+		[TestMethod]
+		public void BitwiseEditLength()
+		{
+			EnhancedByte s1 = new EnhancedByte("this is a test", bytemode.ASCII);
+			EnhancedByte s2 = new EnhancedByte("wokka wokka!!!", bytemode.ASCII);
+			Assert.AreEqual(37, s1.HammingDistance(s2));
+		}
 	}
 }
