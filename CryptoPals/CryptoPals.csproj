@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BestByteScore.cs" />
+    <Compile Include="Combinatorics.cs" />
     <Compile Include="CPSet1.cs" />
     <Compile Include="EnhancedByte.cs" />
     <Compile Include="LanguageSample.cs" />

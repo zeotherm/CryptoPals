@@ -62,19 +62,24 @@ namespace CryptoPals
 			List<Tuple<int, double>> keydists = new List<Tuple<int, double>>();
 			for (int keysize = 2; keysize < 41; keysize++)
 			{
-				var chunk1 = EncryptedData.Take(keysize);
-				var chunk2 = EncryptedData.Skip(keysize).Take(keysize);
-				var distance = (double)chunk1.HammingDistance(chunk2) / ((double)keysize);
-				//Console.WriteLine("KEYSIZE = {0}, ||distance|| = {1}", keysize, distance);
+				var datachunks = new[] {
+					EncryptedData.Take(keysize),
+					EncryptedData.Skip(keysize).Take(keysize),
+					EncryptedData.Skip(keysize * 2).Take(keysize),
+					EncryptedData.Skip(keysize * 3).Take(keysize)
+				};
+				var datacombos = datachunks.DifferentCombinations(2);
+				var distance = datacombos.Select(i => new { e1 = i.First(), e2 = i.Last() })
+									     .Average(pair => (double)pair.e1.HammingDistance(pair.e2) / (double)keysize);
+				Console.WriteLine("KEYSIZE = {0}, ||distance|| = {1}", keysize, distance);
 				keydists.Add(new Tuple<int, double>(keysize, distance));
 			}
-			var optkeysdists = keydists.OrderBy(kdp => kdp.Item2).Take(4);
-			var optKeysize = Convert.ToInt32(optkeysdists.Average(kdp => kdp.Item1));
-			foreach( var kdp in optkeysdists)
+			var optKeysizes = keydists.OrderBy(kdp => kdp.Item2).Take(3);
+			foreach( var opt in optKeysizes)
 			{
-				Console.WriteLine("KEYSIZE {0} has distance {1}", kdp.Item1, kdp.Item2);
+				Console.WriteLine("Potential KEYSIZE = {0}", opt.Item1);
 			}
-			Console.WriteLine("Optimal KEYSIZE = {0}", optKeysize);
+			
 		}
 	}
 }
