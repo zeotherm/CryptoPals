@@ -59,20 +59,22 @@ namespace CryptoPals
 		{
 			var lines = File.ReadAllLines(@"C:\Users\Matt\Documents\Visual Studio 2015\Projects\CryptoPals\CryptoPals\S1C6.txt");
 			var EncryptedData = new EnhancedByte(Convert.FromBase64String(String.Join("", lines)));
-			var optKeysize = -1;
-			var bestDist = Double.MaxValue;
+			List<Tuple<int, double>> keydists = new List<Tuple<int, double>>();
 			for (int keysize = 2; keysize < 41; keysize++)
 			{
 				var chunk1 = EncryptedData.Take(keysize);
 				var chunk2 = EncryptedData.Skip(keysize).Take(keysize);
 				var distance = (double)chunk1.HammingDistance(chunk2) / ((double)keysize);
-				if( distance < bestDist)
-				{
-					optKeysize = keysize;
-					bestDist = distance;
-				}
+				//Console.WriteLine("KEYSIZE = {0}, ||distance|| = {1}", keysize, distance);
+				keydists.Add(new Tuple<int, double>(keysize, distance));
 			}
-			Console.WriteLine("Optimal keysize = {0}, distance = {1}", optKeysize, bestDist);
+			var optkeysdists = keydists.OrderBy(kdp => kdp.Item2).Take(4);
+			var optKeysize = Convert.ToInt32(optkeysdists.Average(kdp => kdp.Item1));
+			foreach( var kdp in optkeysdists)
+			{
+				Console.WriteLine("KEYSIZE {0} has distance {1}", kdp.Item1, kdp.Item2);
+			}
+			Console.WriteLine("Optimal KEYSIZE = {0}", optKeysize);
 		}
 	}
 }
