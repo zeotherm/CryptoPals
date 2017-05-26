@@ -13,6 +13,17 @@ namespace Set1Tests {
 			b = new EnhancedByte(input);
 			Assert.AreEqual(output, b.ToBase64());
 		}
+
+		[TestMethod]
+		public void TestTakeLongerThanData() {
+			b = new EnhancedByte("0001");
+			EnhancedByte c = b.Take(2);
+			Assert.AreEqual(2, c.Length);
+			EnhancedByte d = b.Take(3);
+			Assert.AreEqual(3, d.Length);
+			EnhancedByte e = b.Take(5);
+			Assert.AreEqual(5, e.Length);
+		}
 	}
 
 	[TestClass]

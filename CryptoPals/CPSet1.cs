@@ -15,8 +15,12 @@ namespace CryptoPals
 			LanguageSample EnglishReference = new LanguageSample(Assembly.GetExecutingAssembly(), "en-corpus.txt");
 
 			var bbs = new List<BestByteScore>();
-
-			var lines = File.ReadAllLines(@"C:\Users\Matt\Documents\Visual Studio 2015\Projects\CryptoPals\CryptoPals\S1C4.txt");
+			string[] lines;
+			try {
+				lines = File.ReadAllLines(@"C:\Users\Matt\Documents\Visual Studio 2015\Projects\CryptoPals\CryptoPals\S1C4.txt");
+			} catch( DirectoryNotFoundException) {
+				lines = File.ReadAllLines(@"C:\Users\fordm\Source\Repos\CryptoPals\CryptoPals\S1C4.txt");
+			}
 			foreach (var line in lines)
 			{
 				var e = new EnhancedByte(line);
@@ -50,14 +54,20 @@ namespace CryptoPals
 			var line1 = @"Burning 'em, if you ain't quick and nimble I go crazy when I hear a cymbal";
 			var eb1 = new EnhancedByte(line1, bytemode.ASCII);
 			var key = "ICE";
-			var encrypted = eb1.EncryptRepeatingKeyXOR(key);
+			var cryptor = new RepeatingKeyXORCryptor(eb1);
+			var encrypted = cryptor.Encrypt(key);
 			Console.WriteLine("Encrypted: {0}", encrypted);
-			Console.WriteLine("Decrypted: {0}", encrypted.DecryptRepeatingKeyXOR(key).ToASCII());
+			Console.WriteLine("Decrypted: {0}", new RepeatingKeyXORCryptor(encrypted).Decrypt(key).ToASCII());
 		}
 
 		public static void Challenge6()
 		{
-			var lines = File.ReadAllLines(@"C:\Users\Matt\Documents\Visual Studio 2015\Projects\CryptoPals\CryptoPals\S1C6.txt");
+			string[] lines;
+			try {
+				lines = File.ReadAllLines(@"C:\Users\Matt\Documents\Visual Studio 2015\Projects\CryptoPals\CryptoPals\S1C6.txt");
+			} catch(DirectoryNotFoundException) {
+				lines = File.ReadAllLines(@"C:\Users\fordm\Source\Repos\CryptoPals\CryptoPals\S1C6.txt");
+			}
 			var EncryptedData = new EnhancedByte(Convert.FromBase64String(String.Join("", lines)));
 			List<Tuple<int, double>> keydists = new List<Tuple<int, double>>();
 			for (int keysize = 2; keysize < 41; keysize++)

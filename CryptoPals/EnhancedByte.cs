@@ -106,27 +106,7 @@ namespace CryptoPals
 			return l.HammingDistance(r);
 		}
 
-		private EnhancedByte RepeatingKeyXORHelper( string key)
-		{
-			var key_bytes = Encoding.ASCII.GetBytes(key);
-			var len = key_bytes.Length;
-			var ret = new byte[_data.Length];
-			for( int i = 0; i < _data.Length; i++)
-			{
-				ret[i] = (byte)(_data[i] ^ key_bytes[i % len]);
-			}
-			return new EnhancedByte(ret);
-		}
 
-		public EnhancedByte DecryptRepeatingKeyXOR( string key)
-		{
-			return RepeatingKeyXORHelper(key);
-		}
-
-		public EnhancedByte EncryptRepeatingKeyXOR( string key)
-		{
-			return RepeatingKeyXORHelper(key);
-		}
 
 		public EnhancedByte Skip( int n)
 		{
@@ -137,7 +117,21 @@ namespace CryptoPals
 		public EnhancedByte Take( int n)
 		{
 			// returns a new EnhancedByte that contains only the first n bytes
-			return new EnhancedByte(_data.Take(n).ToArray());
+			var ret = new EnhancedByte(_data.Take(n).ToArray());
+			if( ret.Length < n) {
+				ret.Pad(0, n-ret.Length);
+			}
+			return ret;
+		}
+
+		private void Pad(byte v1, int v2) {
+			byte[] new_data = new byte[_data.Length + v2];
+			Array.Copy(_data, new_data, _data.Length);
+			for( int i = _data.Length; i < _data.Length + v2; i++) {
+				new_data[i] = v1;
+			}
+			_data = new_data;
+			return;
 		}
 	}
 }
