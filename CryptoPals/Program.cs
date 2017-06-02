@@ -12,11 +12,13 @@ namespace CryptoPals
 	{
 		static void Main(string[] args)
 		{
-
+			Console.WriteLine("============= Challenge 3 ===============");
+			CPSet1.Challenge3();
+			Console.WriteLine("============= Challenge 4 ===============");
 			CPSet1.Challenge4();
-
+			Console.WriteLine("============= Challenge 5 ===============");
 			CPSet1.Challenge5();
-
+			Console.WriteLine("============= Challenge 6 ===============");
 			CPSet1.Challenge6();
 			//var eb1 = new EnhancedByte("this is a test", bytemode.ASCII);
 			//var eb2 = new EnhancedByte("wokka wokka!!!", bytemode.ASCII);

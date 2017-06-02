@@ -56,6 +56,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="RepeatingKeyXORCryptor.cs" />
+    <Compile Include="SingleByteXORCryptor.cs" />
     <Compile Include="TextComparer.cs" />
   </ItemGroup>
   <ItemGroup>

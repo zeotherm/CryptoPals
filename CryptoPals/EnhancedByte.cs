@@ -49,8 +49,16 @@ namespace CryptoPals
 		}
 
 		public override string ToString() {
-			string hex = BitConverter.ToString(_data);
-			return hex.ToLower().Replace("-", "");
+			StringBuilder sb = new StringBuilder();
+			for( int i = 0; i < _data.Length-1; i++) { 
+				sb.AppendFormat(_data[i].ToString().PadLeft(3, '0'));
+				sb.Append("-");
+			}
+			sb.AppendFormat(_data[_data.Length - 1].ToString().PadLeft(3, '0'));
+
+			//String.Join("-", _data);
+			//string hex = String.Join("-", _data); //BitConverter.ToString(_data);
+			return sb.ToString();//hex;//.ToLower().Replace("-", "");
 		}
 
 		public string ToASCII() {
@@ -114,11 +122,11 @@ namespace CryptoPals
 			return new EnhancedByte(_data.Skip(n).ToArray());
 		}
 
-		public EnhancedByte Take( int n)
+		public EnhancedByte Take( int n, bool pad = false)
 		{
 			// returns a new EnhancedByte that contains only the first n bytes
 			var ret = new EnhancedByte(_data.Take(n).ToArray());
-			if( ret.Length < n) {
+			if( pad && ret.Length < n) {
 				ret.Pad(0, n-ret.Length);
 			}
 			return ret;

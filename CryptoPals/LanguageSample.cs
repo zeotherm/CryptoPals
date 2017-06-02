@@ -27,6 +27,14 @@ namespace CryptoPals {
 			_freq.Add(c, i);
 		}
 
+		public void Increment( char c) {
+			if (_freq.ContainsKey(c)) {
+				_freq[c] += 1;
+			} else {
+				_freq.Add(c, 1);
+			}
+		}
+
 		public int this[char c] {
 			get {
 				if (_freq.ContainsKey(c)) return _freq[c];
@@ -53,11 +61,13 @@ namespace CryptoPals {
 
 	internal sealed class LanguageSample {
 		private Dictionary<string, AlphabetCounter> _n_gram;
+		private AlphabetCounter _histogram;
 		private readonly double _length;
 		private string _triad;
 
 		private LanguageSample() {
 			_n_gram = new Dictionary<string, AlphabetCounter>();
+			_histogram = new AlphabetCounter();
 			_triad = "   ";
 		}
 
@@ -104,11 +114,8 @@ namespace CryptoPals {
 					val = new AlphabetCounter();
 					_n_gram.Add(_triad, val);
 				}
-				if (val.Contains(c)) {
-					val[c] += 1;
-				} else {
-					val.Add(c, 1);
-				}
+				val.Increment(c);
+				_histogram.Increment(c);
 				_triad = String.Concat(_triad[1], _triad[2], c);
 			}
 			return;
@@ -118,7 +125,26 @@ namespace CryptoPals {
 			get { return _length; }
 		}
 
-		public double CompareTo(LanguageSample ls) {
+		public double PercentReadableASCII() {
+			var in_range = _histogram.Keys.Sum(c => ((byte)c >= 32 && (byte)c < 127) ? _histogram[c] : 0);
+			var count = _histogram.Values.Sum();
+			return (double)in_range / (double)count;
+		}
+
+		public double PercentEnglishASCII() {
+			var in_range = _histogram.Keys.Sum(c => IsASCIIAlphaNumeric(c) || c == ' ' ? _histogram[c] : 0);
+			var count = _histogram.Values.Sum();
+			return (double)in_range / (double)count;
+		}
+
+		private bool IsASCIIAlphaNumeric( char c) {
+			byte b = (byte)c;
+			return     (b >= 48 && b < 58)
+				    || (b >= 65 && b < 91)
+					|| (b >= 97 && b < 123);
+		}
+
+		public double TriadComparison(LanguageSample ls) {
 			double total = 0.0;
 			foreach( var k in _n_gram.Keys) {
 				if( ls.ContainsNGram(k)) {
@@ -132,12 +158,25 @@ namespace CryptoPals {
 			return total/(this.Length * ls.Length);
 		}
 
+		public double BhattacharyyaCoeff( LanguageSample ls) {
+			var rhs = ls.Histogram();
+			double sum = 0.0;
+			foreach( var c in _histogram.Keys.Intersect(rhs.Keys)) {
+				sum += rhs[c] * _histogram[c];
+			}
+			return Math.Sqrt(sum);
+		}
+
 		public bool ContainsNGram(string s) {
 			return _n_gram.ContainsKey(s);
 		}
 
 		public AlphabetCounter GetNGram(string s) {
 			return _n_gram[s];
+		}
+
+		public AlphabetCounter Histogram() {
+			return _histogram;
 		}
 	}
 }
