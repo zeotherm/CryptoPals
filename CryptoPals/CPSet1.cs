@@ -17,17 +17,17 @@ namespace CryptoPals
 			var best_byte = new SingleByteXORCryptor(e).DecypherKey(s => new LanguageSample(s).TriadComparison(EnglishReference));
 			var decoded = (e ^ best_byte.BestByte).ToASCII();
 			Console.WriteLine("\t====== Using Triad Compares ======");
-			Console.WriteLine("Decoding with {0:X2} ({1}) gives \"{2}\"", best_byte, Encoding.ASCII.GetString(new[] { best_byte.BestByte }), (e ^ best_byte.BestByte).ToASCII());
+			Console.WriteLine("Decoding with {0:X2} ({1}) gives \"{2}\"", best_byte.BestByte, Encoding.ASCII.GetString(new[] { best_byte.BestByte }), (e ^ best_byte.BestByte).ToASCII());
 
 			best_byte = new SingleByteXORCryptor(e).DecypherKey(s => new LanguageSample(s).PercentEnglishASCII());
 			decoded = (e ^ best_byte.BestByte).ToASCII();
 			Console.WriteLine("\t====== Using English ASCII ======");
-			Console.WriteLine("Decoding with {0:X2} ({1}) gives \"{2}\"", best_byte, Encoding.ASCII.GetString(new[] { best_byte.BestByte }), (e ^ best_byte.BestByte).ToASCII());
+			Console.WriteLine("Decoding with {0:X2} ({1}) gives \"{2}\"", best_byte.BestByte, Encoding.ASCII.GetString(new[] { best_byte.BestByte }), (e ^ best_byte.BestByte).ToASCII());
 
 			best_byte = new SingleByteXORCryptor(e).DecypherKey(s => new LanguageSample(s).BhattacharyyaCoeff(EnglishReference));
 			decoded = (e ^ best_byte.BestByte).ToASCII();
 			Console.WriteLine("\t====== Using Bhattacharyya Coefficient ======");
-			Console.WriteLine("Decoding with {0:X2} ({1}) gives \"{2}\"", best_byte, Encoding.ASCII.GetString(new[] { best_byte.BestByte }), (e ^ best_byte.BestByte).ToASCII());
+			Console.WriteLine("Decoding with {0:X2} ({1}) gives \"{2}\"", best_byte.BestByte, Encoding.ASCII.GetString(new[] { best_byte.BestByte }), (e ^ best_byte.BestByte).ToASCII());
 		}
 
 		public static void Challenge4()
@@ -109,52 +109,54 @@ namespace CryptoPals
 
 		public static void Challenge6()
 		{
-			//string[] lines;
-			//try {
-			//	lines = File.ReadAllLines(@"C:\Users\Matt\Documents\Visual Studio 2015\Projects\CryptoPals\CryptoPals\S1C6.txt");
-			//} catch(DirectoryNotFoundException) {
-			//	lines = File.ReadAllLines(@"C:\Users\fordm\Source\Repos\CryptoPals\CryptoPals\S1C6.txt");
-			//}
-			var RawData = new EnhancedByte("A red dog", bytemode.ASCII);
-			//new EnhancedByte(Convert.FromBase64String(String.Join("", lines)));
-			var key = "k3y";
-			var Cryptor = new RepeatingKeyXORCryptor(RawData);
-			var EncryptedData = Cryptor.Encrypt(key);
-			var possibleKey = new RepeatingKeyXORCryptor(EncryptedData).DecipherKey(3);
+			string[] lines;
+			try {
+				lines = File.ReadAllLines(@"C:\Users\Matt\Documents\Visual Studio 2015\Projects\CryptoPals\CryptoPals\S1C6.txt");
+			} catch (DirectoryNotFoundException) {
+				lines = File.ReadAllLines(@"C:\Users\fordm\Source\Repos\CryptoPals\CryptoPals\S1C6.txt");
+			}
 
-			// TODO: Need to be cautious about what to do when data size is small and what maximum keysize can be...
-			//List<Tuple<int, double>> keydists = new List<Tuple<int, double>>();
-			//for (int keysize = 2; keysize < Math.Min(RawData.Length, 41); keysize++)
-			//{
-			//	var datachunks = new[] {
-			//		EncryptedData.Take(keysize),
-			//		EncryptedData.Skip(keysize).Take(keysize),
-			//		EncryptedData.Skip(keysize * 2).Take(keysize),
-			//		EncryptedData.Skip(keysize * 3).Take(keysize)
-			//	};
-			//	var datacombos = datachunks.DifferentCombinations(2);
-			//	var distance = datacombos.Select(i => new { e1 = i.First(), e2 = i.Last() })
-			//						     .Average(pair => (double)pair.e1.HammingDistance(pair.e2) / (double)keysize);
-			//	//Console.WriteLine("KEYSIZE = {0}, ||distance|| = {1}", keysize, distance);
-			//	keydists.Add(new Tuple<int, double>(keysize, distance));
-			//}
-			//var optKeysizes = keydists.OrderBy(kdp => kdp.Item2).Take(3);
-			//var EnglishReference = new LanguageSample(System.Reflection.Assembly.GetExecutingAssembly(), "en-corpus.txt");
-			//var bestLangDistance = 0.0;
-			//var bestKey = String.Empty;
-			//var possibleKey = Cryptor.DecipherKey(14);
-			//foreach ( var opt in optKeysizes)
-			//{
-			//	var possibleKey = Cryptor.DecipherKey(opt.Item1);
-			//	var potentialAnswer = Cryptor.Decrypt(possibleKey).ToASCII();
-			//	var langDistance = EnglishReference.CompareTo(new LanguageSample(potentialAnswer));
-			//	if( langDistance > bestLangDistance) {
-			//		bestLangDistance = langDistance;
-			//		bestKey = possibleKey;
-			//	}
-			//	Console.WriteLine("Potential KEYSIZE = {0}, Decrypted key = {1}, English Score = {2}", opt.Item1, possibleKey, langDistance);
-			//}
-			//Console.WriteLine("The decrypted text is:\n{0} ", Cryptor.Decrypt(bestKey).ToASCII());
+			//var input = "The quick brown fox jumps over the lazy dog is an English-language pangram—a sentence that contains all of the letters of the alphabet. It is commonly used for touch-typing practice, testing typewriters and computer keyboards, displaying examples of fonts, and other applications involving text where the use of all letters in the alphabet is desired. Owing to its brevity and coherence, it has become widely known.";
+			//var input = "A red dog";
+			//var RawData = new EnhancedByte(input, bytemode.ASCII);
+			var EncryptedData = new EnhancedByte(Convert.FromBase64String(String.Join("", lines)));
+			//var key = "quickBrown";
+			//var key = "k3y";
+			//var CCryptor = new RepeatingKeyXORCryptor(RawData);
+			//var EData = CCryptor.Encrypt(key);
+			//var pKey = new RepeatingKeyXORCryptor(EData).DecipherKey(3);
+			//Console.WriteLine($"Is your key {pKey}?");
+			//TODO: Need to be cautious about what to do when data size is small and what maximum keysize can be...
+			List<Tuple<int, double>> keydists = new List<Tuple<int, double>>();
+			for (int keysize = 2; keysize < 41; keysize++) {
+				var datachunks = new[] {
+					EncryptedData.Take(keysize),
+					EncryptedData.Skip(keysize).Take(keysize),
+					EncryptedData.Skip(keysize * 2).Take(keysize),
+					EncryptedData.Skip(keysize * 3).Take(keysize)
+				};
+				var datacombos = datachunks.DifferentCombinations(2);
+				var distance = datacombos.Select(i => new { e1 = i.First(), e2 = i.Last() })
+										 .Average(pair => (double)pair.e1.HammingDistance(pair.e2) / (double)keysize);
+				//Console.WriteLine("KEYSIZE = {0}, ||distance|| = {1}", keysize, distance);
+				keydists.Add(new Tuple<int, double>(keysize, distance));
+			}
+			var optKeysizes = keydists.OrderBy(kdp => kdp.Item2).Take(3);
+			var EnglishReference = new LanguageSample(System.Reflection.Assembly.GetExecutingAssembly(), "en-corpus.txt");
+			var bestLangDistance = 0.0;
+			var bestKey = String.Empty;
+			var Cryptor = new RepeatingKeyXORCryptor(EncryptedData);
+			foreach (var opt in optKeysizes) {
+				var possibleKey = Cryptor.DecipherKey(opt.Item1);
+				var potentialAnswer = Cryptor.Decrypt(possibleKey).ToASCII();
+				var langDistance = EnglishReference.TriadComparison(new LanguageSample(potentialAnswer));
+				if (langDistance > bestLangDistance) {
+					bestLangDistance = langDistance;
+					bestKey = possibleKey;
+				}
+				Console.WriteLine($@"Potential KEYSIZE = {opt.Item1}, Decrypted key = ""{possibleKey}"", English Score = {langDistance:G5}");
+			}
+			Console.WriteLine("The decrypted text is:\n{0} ", Cryptor.Decrypt(bestKey).ToASCII());
 		}
 	}
 }

@@ -31,18 +31,7 @@ namespace CryptoPals {
 		public BestByteScore DecypherKey( Func<string, double> f) {
 			Dictionary<byte, double> scores = new Dictionary<byte, double>();
 			for (byte b = 1; b < 255; b++) {
-				if( b == 107) {
-					var foo = 1;
-				}
-				if( b == 51) {
-					var bar = 2;
-				}
-				if( b == 121) {
-					var baz = 3;
-				}
-				var test_string = (_ct ^ b).ToASCII();
-				var string_score = f(test_string);
-				scores.Add(b, string_score);
+				scores.Add(b, f((_ct ^ b).ToASCII()));
 			}
 			var best_byte = scores.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
 			return new BestByteScore(best_byte, scores[best_byte]);

@@ -49,16 +49,17 @@ namespace CryptoPals
 		}
 
 		public override string ToString() {
-			StringBuilder sb = new StringBuilder();
-			for( int i = 0; i < _data.Length-1; i++) { 
-				sb.AppendFormat(_data[i].ToString().PadLeft(3, '0'));
-				sb.Append("-");
-			}
-			sb.AppendFormat(_data[_data.Length - 1].ToString().PadLeft(3, '0'));
+			//StringBuilder sb = new StringBuilder();
+			//for( int i = 0; i < _data.Length-1; i++) { 
+			//	sb.AppendFormat(_data[i].ToString().PadLeft(3, '0'));
+			//	sb.Append("-");
+			//}
+			//sb.AppendFormat(_data[_data.Length - 1].ToString().PadLeft(3, '0'));
 
 			//String.Join("-", _data);
 			//string hex = String.Join("-", _data); //BitConverter.ToString(_data);
-			return sb.ToString();//hex;//.ToLower().Replace("-", "");
+			//return sb.ToString();//hex;//.ToLower().Replace("-", "");
+			return BitConverter.ToString(_data).ToLower().Replace("-", "");
 		}
 
 		public string ToASCII() {

@@ -52,7 +52,10 @@ namespace CryptoPals {
 			var potential_key = new List<byte>();
 			foreach( var c in transposed_chunks) {
 				var singleXOR = new SingleByteXORCryptor(c);
-				var guess = singleXOR.DecypherKey(s => new LanguageSample(s).PercentEnglishASCII());
+				var guess = singleXOR.DecypherKey(s => {
+					var l = new LanguageSample(s);
+					return l.BhattacharyyaCoeff(EnglishReference) * l.PercentEnglishASCII();
+				});
 				potential_key.Add(guess.BestByte);
 			}
 
