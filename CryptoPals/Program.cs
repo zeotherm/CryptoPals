@@ -20,6 +20,8 @@ namespace CryptoPals
 			CPSet1.Challenge5();
 			Console.WriteLine("============= Challenge 6 ===============");
 			CPSet1.Challenge6();
+			Console.WriteLine("============= Challenge 7 ===============");
+			CPSet1.Challenge7();
 			//var eb1 = new EnhancedByte("this is a test", bytemode.ASCII);
 			//var eb2 = new EnhancedByte("wokka wokka!!!", bytemode.ASCII);
 

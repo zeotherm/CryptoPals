@@ -1,8 +1,10 @@
-﻿using System;
+﻿//using OpenSSL.Crypto;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -116,16 +118,7 @@ namespace CryptoPals
 				lines = File.ReadAllLines(@"C:\Users\fordm\Source\Repos\CryptoPals\CryptoPals\S1C6.txt");
 			}
 
-			//var input = "The quick brown fox jumps over the lazy dog is an English-language pangram—a sentence that contains all of the letters of the alphabet. It is commonly used for touch-typing practice, testing typewriters and computer keyboards, displaying examples of fonts, and other applications involving text where the use of all letters in the alphabet is desired. Owing to its brevity and coherence, it has become widely known.";
-			//var input = "A red dog";
-			//var RawData = new EnhancedByte(input, bytemode.ASCII);
 			var EncryptedData = new EnhancedByte(Convert.FromBase64String(String.Join("", lines)));
-			//var key = "quickBrown";
-			//var key = "k3y";
-			//var CCryptor = new RepeatingKeyXORCryptor(RawData);
-			//var EData = CCryptor.Encrypt(key);
-			//var pKey = new RepeatingKeyXORCryptor(EData).DecipherKey(3);
-			//Console.WriteLine($"Is your key {pKey}?");
 			//TODO: Need to be cautious about what to do when data size is small and what maximum keysize can be...
 			List<Tuple<int, double>> keydists = new List<Tuple<int, double>>();
 			for (int keysize = 2; keysize < 41; keysize++) {
@@ -138,7 +131,6 @@ namespace CryptoPals
 				var datacombos = datachunks.DifferentCombinations(2);
 				var distance = datacombos.Select(i => new { e1 = i.First(), e2 = i.Last() })
 										 .Average(pair => (double)pair.e1.HammingDistance(pair.e2) / (double)keysize);
-				//Console.WriteLine("KEYSIZE = {0}, ||distance|| = {1}", keysize, distance);
 				keydists.Add(new Tuple<int, double>(keysize, distance));
 			}
 			var optKeysizes = keydists.OrderBy(kdp => kdp.Item2).Take(3);
@@ -157,6 +149,36 @@ namespace CryptoPals
 				Console.WriteLine($@"Potential KEYSIZE = {opt.Item1}, Decrypted key = ""{possibleKey}"", English Score = {langDistance:G5}");
 			}
 			Console.WriteLine("The decrypted text is:\n{0} ", Cryptor.Decrypt(bestKey).ToASCII());
+		}
+
+		public static void Challenge7() {
+			string[] lines;
+			try {
+				lines = File.ReadAllLines(@"C:\Users\Matt\Documents\Visual Studio 2015\Projects\CryptoPals\CryptoPals\S1C7.txt");
+			} catch (DirectoryNotFoundException) {
+				lines = File.ReadAllLines(@"C:\Users\fordm\Source\Repos\CryptoPals\CryptoPals\S1C7.txt");
+			}
+
+			var data = Convert.FromBase64String(String.Join("", lines));
+
+			var password = Encoding.ASCII.GetBytes("YELLOW SUBMARINE");
+			Aes Decryptor = Aes.Create();
+			Decryptor.Mode = CipherMode.ECB;
+			Decryptor.BlockSize = 128;
+			Decryptor.KeySize = password.Length * 8;
+			Decryptor.Key = password;
+
+			Decryptor.Padding = PaddingMode.None;
+			ICryptoTransform Decr = Decryptor.CreateDecryptor();
+			Byte[] plainText = null;
+			using (MemoryStream ms = new MemoryStream()) { 
+				using (CryptoStream cs = new CryptoStream(ms, Decr, CryptoStreamMode.Write)) {
+					cs.Write(data, 0, data.Length);
+				}
+				plainText = ms.ToArray();
+			}
+
+			Console.WriteLine($"The decrypted file is:\n{Encoding.ASCII.GetString(plainText)}");
 		}
 	}
 }
